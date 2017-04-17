@@ -22,8 +22,32 @@ public func positionSequence (from: Position, to: Position) -> PositionSequence 
         .flatMap { $0 }
 }
 
-public enum CellState {
-    case alive, empty, born, died
+public enum CellState: String { // added String type
+    case alive = "Alive" //Give the enum a raw type of String
+    case empty = "Empty" //Give the enum a raw type of String
+    case born = "Born" //Give the enum a raw type of String
+    case died = "Died" //Give the enum a raw type of String
+    
+    var description: String {//equip the enum with a description method which uses a switch statement to hand back the raw value added property description with switch that return sring
+        switch self {
+        case .alive: return "This is alive"
+        case .empty: return "This is empty"
+        case .born: return "This is born"
+        case .died: return "This is died"
+        }
+    }
+    
+    public var allValue: [CellState]{ // To return all values of enum
+        return [.alive, .empty, .born, .died]
+    }
+    
+    public func toggle(value: CellState) -> CellState{ //equip the enum with a method toggle(value:CellState)-> CellState which when passed .empty or .died, returns .alive, when passed .alive or .born returns
+        if value == .empty || value == .died {
+            return .alive
+        }else {
+            return .empty
+        }
+    }
     
     public var isAlive: Bool {
         switch self {
@@ -39,7 +63,7 @@ public struct Cell {
 }
 
 public struct Grid {
-    private var _cells: [[Cell]]
+    var _cells: [[Cell]]
     fileprivate var modulus: Position { return Position(_cells.count, _cells[0].count) }
     
     // Get and Set cell states by position
@@ -55,7 +79,8 @@ public struct Grid {
     public init(_ rows: Int, _ cols: Int, cellInitializer: (Position) -> CellState = { _, _ in .empty } ) {
         _cells = [[Cell]]( repeatElement( [Cell](repeatElement(Cell(), count: rows)), count: cols) )
         positions = positionSequence(from: Position(0,0), to: Position(rows, cols))
-        positions.forEach { _cells[$0.row][$0.col].position = $0; self[$0] = cellInitializer($0) }
+        positions.forEach { _cells[$0.row][$0.col].position = $0;
+            self[$0] = cellInitializer($0) }
     }
     
     private static let offsets: [Position] = [
@@ -123,7 +148,10 @@ extension Grid: Sequence {
             let previous:  GridHistory?
             
             static func == (lhs: GridHistory, rhs: GridHistory) -> Bool {
-                return lhs.positions.elementsEqual(rhs.positions, by: ==)
+                guard lhs.positions.count == rhs.positions.count else { return false }
+                let zipped = zip(lhs.positions, rhs.positions)
+                for pair in zipped { if pair.0.row != pair.1.row || pair.0.col != pair.1.col { return false } }
+                return true
             }
             
             init(_ positions: [Position], _ previous: GridHistory? = nil) {
@@ -161,6 +189,7 @@ extension Grid: Sequence {
     public func makeIterator() -> HistoricGridIterator {
         return HistoricGridIterator(grid: self)
     }
+    
 }
 
 func gliderInitializer(row: Int, col: Int) -> CellState {
