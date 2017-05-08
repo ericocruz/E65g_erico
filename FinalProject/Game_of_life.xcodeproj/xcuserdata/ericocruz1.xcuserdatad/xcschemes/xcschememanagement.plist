@@ -4,15 +4,15 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Assignment2.xcscheme</key>
+		<key>Game_of_life.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>2</integer>
+			<integer>4</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>FBAD2DC61E2BDE55008207C0</key>
+		<key>63BDC23C1EAD2A130059D982</key>
 		<dict>
 			<key>primary</key>
 			<true/>

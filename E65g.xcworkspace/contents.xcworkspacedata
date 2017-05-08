@@ -17,6 +17,6 @@
       location = "group:Assignment5/Assignment5.playground">
    </FileRef>
    <FileRef
-      location = "group:FinalProject/FinalProject.xcodeproj">
+      location = "group:FinalProject/Game_of_life.xcodeproj">
    </FileRef>
 </Workspace>
